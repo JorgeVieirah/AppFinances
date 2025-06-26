@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <div class="container">
+        <h2>Resumo Financeiro</h2>
+        <p>Olá, {{ session['username'] }}!</p>
+        <ul>
+            <li>Saldo Total: R$ {{ total }}</li>
+            <li>Entradas: R$ {{ entradas }}</li>
+            <li>Saídas: R$ {{ saidas }}</li>
+        </ul>
+        <a href="{{ url_for('add_expense') }}" class="btn">Adicionar Gasto</a>
+        <a href="{{ url_for('logout') }}" class="btn logout">Sair</a>
+
+        <h3>Gastos Recentes</h3>
+        <table>
+            <thead>
+                <tr>
+                    <th>Descrição</th>
+                    <th>Categoria</th>
+                    <th>Valor</th>
+                    <th>Data</th>
+                    <th>Ações</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for gasto in gastos %}
+                <tr>
+                    <td>{{ gasto.descricao }}</td>
+                    <td>{{ gasto.categoria }}</td>
+                    <td>R$ {{ gasto.valor }}</td>
+                    <td>{{ gasto.data }}</td>
+                    <td><a href="{{ url_for('remover', gasto_id=gasto.id) }}">Remover</a></td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+
+        <p class="filters">
+            Filtrar por:
+            <a href="{{ url_for('dashboard', filtro='dia') }}">Dia</a>
+            <a href="{{ url_for('dashboard', filtro='semana') }}">Semana</a>
+            <a href="{{ url_for('dashboard', filtro='mes') }}">Mês</a>
+            <a href="{{ url_for('dashboard', filtro='ano') }}">Ano</a>
+        </p>
+    </div>
+</body>
+</html>
